@@ -97,3 +97,9 @@ Contributions make the open-source community such an amazing place to learn, ins
 ## 📄 License
 
 This project is open-source and available under the MIT License.
+
+---
+
+<p align="center">
+  <b>Designed and Developed by Abhranil Singha Roy</b>
+</p>

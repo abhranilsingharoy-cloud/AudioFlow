@@ -3,87 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AudioFlow | Professional PDF Converter</title>
+    <title>AudioFlow | Advanced AI PDF Converter</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Modern Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons for premium look -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
 
+    <!-- Animated background elements -->
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+
     <div class="container">
         <header>
-            <div class="logo">🎧 AudioFlow</div>
-            <p>Convert your documents into immersive audiobooks instantly.</p>
+            <div class="logo">
+                <i class="ph-fill ph-headphones"></i> AudioFlow <span class="badge">AI</span>
+            </div>
+            <p>Transform documents into ultra-realistic audiobooks instantly.</p>
         </header>
 
-        <div class="card">
+        <div class="glass-card">
             <form action="/" method="post" enctype="multipart/form-data" id="convertForm">
                 
                 <div class="upload-area">
                     <input type="file" name="pdf_file" id="pdf_file" accept=".pdf" required>
                     <label for="pdf_file">
-                        <span class="icon">📄</span>
-                        <span id="file-label">Click to upload PDF</span>
+                        <div class="icon-container">
+                            <i class="ph-duotone ph-file-pdf icon"></i>
+                        </div>
+                        <span id="file-label">Drag & drop your PDF or click to browse</span>
+                        <span class="file-hint">Supported formats: .pdf (Max 50MB)</span>
                     </label>
                 </div>
 
                 <div class="settings-grid">
                     <div class="form-group">
-                        <label>Language</label>
+                        <label><i class="ph ph-translate"></i> Neural Voice Language</label>
                         <select name="language">
-                            <option value="en">English</option>
-                            <option value="hi">Hindi</option>
-                            <option value="es">Spanish</option>
-                            <option value="fr">French</option>
+                            <option value="en">🇺🇸 English (Aria - Female)</option>
+                            <option value="hi">🇮🇳 Hindi (Swara - Female)</option>
+                            <option value="es">🇪🇸 Spanish (Elvira - Female)</option>
+                            <option value="fr">🇫🇷 French (Denise - Female)</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Speed</label>
+                        <label><i class="ph ph-gauge"></i> Playback Speed</label>
                         <select name="speed">
-                            <option value="normal">Normal Speed</option>
-                            <option value="slow">Slow Speed</option>
+                            <option value="normal">1.0x Normal Speed</option>
+                            <option value="slow">0.8x Slow Speed</option>
                         </select>
                     </div>
                 </div>
 
-                <button type="submit" class="btn-primary" id="submitBtn">Generate Audiobook</button>
+                <button type="submit" class="btn-primary" id="submitBtn">
+                    <i class="ph-bold ph-magic-wand"></i> Synthesize Audio
+                </button>
             </form>
 
             <div id="loading" class="hidden">
-                <div class="spinner"></div>
-                <p>Processing... specific large files may take a minute.</p>
+                <div class="ai-loader">
+                    <div class="wave"></div>
+                    <div class="wave"></div>
+                    <div class="wave"></div>
+                    <div class="wave"></div>
+                    <div class="wave"></div>
+                </div>
+                <p>Neural engine processing document...</p>
+                <small>Extracting text and synthesizing high-fidelity audio.</small>
             </div>
 
             {% if error %}
             <div class="alert error">
-                {{ error }}
+                <i class="ph-fill ph-warning-circle"></i> {{ error }}
             </div>
             {% endif %}
         </div>
 
         <footer>
-            <p>Powered by Python, PyMuPDF & gTTS</p>
+            <p>Engineered with ❤️ using Python, PyMuPDF & Microsoft Edge TTS</p>
         </footer>
     </div>
 
     <script>
-        // Simple script to update filename and show loader
         const fileInput = document.getElementById('pdf_file');
         const fileLabel = document.getElementById('file-label');
         const form = document.getElementById('convertForm');
         const loading = document.getElementById('loading');
         const btn = document.getElementById('submitBtn');
+        const uploadArea = document.querySelector('.upload-area label');
+
+        // Drag and drop visual cues
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            uploadArea.classList.add('highlight');
+        }
+
+        function unhighlight(e) {
+            uploadArea.classList.remove('highlight');
+        }
+
+        uploadArea.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            let dt = e.dataTransfer;
+            let files = dt.files;
+            fileInput.files = files;
+            updateFilename(files[0]);
+        }
 
         fileInput.addEventListener('change', (e) => {
             if (e.target.files[0]) {
-                fileLabel.innerText = e.target.files[0].name;
-                fileLabel.style.fontWeight = "600";
-                fileLabel.style.color = "#4f46e5";
+                updateFilename(e.target.files[0]);
             }
         });
 
+        function updateFilename(file) {
+            fileLabel.innerHTML = `<strong>${file.name}</strong> selected`;
+            fileLabel.style.color = "#a78bfa";
+        }
+
         form.addEventListener('submit', () => {
-            loading.classList.remove('hidden');
-            btn.classList.add('hidden');
+            // Check if file is selected
+            if(fileInput.files.length > 0) {
+                loading.classList.remove('hidden');
+                btn.classList.add('hidden');
+            }
         });
     </script>
 </body>

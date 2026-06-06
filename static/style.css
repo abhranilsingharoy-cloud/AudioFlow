@@ -314,3 +314,24 @@ footer {
     font-size: 0.85rem;
     color: var(--text-muted);
 }
+
+.developer-credit {
+    position: fixed;
+    bottom: 20px;
+    right: 25px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    z-index: 100;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.developer-credit:hover {
+    opacity: 1;
+}
+
+.developer-credit span {
+    color: var(--primary);
+}

@@ -97,7 +97,8 @@ Contributions make the open-source community such an amazing place to learn, ins
 ## 📄 License
 
 Copyright (c) 2026 Abhranil Singha Roy. All Rights Reserved.
-This project is proprietary. You may not copy, modify, or distribute this code without express written permission from the author.
+
+This project is proprietary and confidential. Unauthorized copying, modification, or distribution of this software, via any medium, is strictly prohibited without the express written permission of the author.
 
 ---
 

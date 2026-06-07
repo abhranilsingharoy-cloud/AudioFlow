@@ -96,7 +96,8 @@ Contributions make the open-source community such an amazing place to learn, ins
 
 ## 📄 License
 
-This project is open-source and available under the MIT License.
+Copyright (c) 2026 Abhranil Singha Roy. All Rights Reserved.
+This project is proprietary. You may not copy, modify, or distribute this code without express written permission from the author.
 
 ---
 

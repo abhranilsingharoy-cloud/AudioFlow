@@ -9,83 +9,202 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <!-- Phosphor Icons for premium look -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Spline 3D Viewer -->
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.5/build/spline-viewer.js"></script>
 </head>
 <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo nav-logo">
+                <i class="ph-fill ph-headphones"></i> AudioFlow
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#how-it-works">How it Works</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+            </ul>
+        </div>
+    </nav>
 
     <!-- Animated background elements -->
     <div class="bg-orb orb-1"></div>
     <div class="bg-orb orb-2"></div>
     <div class="bg-orb orb-3"></div>
 
-    <div class="container">
-        <header>
-            <div class="logo">
-                <i class="ph-fill ph-headphones"></i> AudioFlow <span class="badge">AI</span>
-            </div>
-            <p>Transform documents into ultra-realistic audiobooks instantly.</p>
-        </header>
-
-        <div class="glass-card">
-            <form action="/" method="post" enctype="multipart/form-data" id="convertForm">
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="hero-section">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <div class="logo">
+                        <i class="ph-fill ph-headphones"></i> AudioFlow <span class="badge">AI</span>
+                    </div>
+                    <h1>Transform documents into <br/><span class="text-gradient">ultra-realistic audiobooks</span> instantly.</h1>
+                    <p class="hero-sub">Experience the next generation of text-to-speech with advanced neural voices.</p>
+                </div>
                 
-                <div class="upload-area">
-                    <input type="file" name="pdf_file" id="pdf_file" accept=".pdf" required>
-                    <label for="pdf_file">
-                        <div class="icon-container">
-                            <i class="ph-duotone ph-file-pdf icon"></i>
+                <div class="hero-3d">
+                    <spline-viewer url="https://prod.spline.design/iW5Xq31XpLg2-o5O/scene.splinecode"></spline-viewer>
+                </div>
+            </div>
+
+            <div class="container converter-container">
+                <div class="glass-card card-3d-hover">
+                    <form action="/" method="post" enctype="multipart/form-data" id="convertForm">
+                        
+                        <div class="upload-area">
+                            <input type="file" name="pdf_file" id="pdf_file" accept=".pdf" required>
+                            <label for="pdf_file">
+                                <div class="icon-container">
+                                    <i class="ph-duotone ph-file-pdf icon"></i>
+                                </div>
+                                <span id="file-label">Drag & drop your PDF or click to browse</span>
+                                <span class="file-hint">Supported formats: .pdf (Max 50MB)</span>
+                            </label>
                         </div>
-                        <span id="file-label">Drag & drop your PDF or click to browse</span>
-                        <span class="file-hint">Supported formats: .pdf (Max 50MB)</span>
-                    </label>
-                </div>
 
-                <div class="settings-grid">
-                    <div class="form-group">
-                        <label><i class="ph ph-translate"></i> Neural Voice Language</label>
-                        <select name="language">
-                            <option value="en">🇺🇸 English (Aria - Female)</option>
-                            <option value="hi">🇮🇳 Hindi (Swara - Female)</option>
-                            <option value="es">🇪🇸 Spanish (Elvira - Female)</option>
-                            <option value="fr">🇫🇷 French (Denise - Female)</option>
-                        </select>
+                        <div class="settings-grid">
+                            <div class="form-group">
+                                <label><i class="ph ph-translate"></i> Neural Voice Language</label>
+                                <select name="language">
+                                    <option value="en">🇺🇸 English (Aria - Female)</option>
+                                    <option value="hi">🇮🇳 Hindi (Swara - Female)</option>
+                                    <option value="es">🇪🇸 Spanish (Elvira - Female)</option>
+                                    <option value="fr">🇫🇷 French (Denise - Female)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="ph ph-gauge"></i> Playback Speed</label>
+                                <select name="speed">
+                                    <option value="normal">1.0x Normal Speed</option>
+                                    <option value="slow">0.8x Slow Speed</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary" id="submitBtn">
+                            <i class="ph-bold ph-magic-wand"></i> Synthesize Audio
+                        </button>
+                    </form>
+
+                    <div id="loading" class="hidden">
+                        <div class="ai-loader">
+                            <div class="wave"></div>
+                            <div class="wave"></div>
+                            <div class="wave"></div>
+                            <div class="wave"></div>
+                            <div class="wave"></div>
+                        </div>
+                        <p>Neural engine processing document...</p>
+                        <small>Extracting text and synthesizing high-fidelity audio.</small>
                     </div>
-                    <div class="form-group">
-                        <label><i class="ph ph-gauge"></i> Playback Speed</label>
-                        <select name="speed">
-                            <option value="normal">1.0x Normal Speed</option>
-                            <option value="slow">0.8x Slow Speed</option>
-                        </select>
+
+                    {% if error %}
+                    <div class="alert error">
+                        <i class="ph-fill ph-warning-circle"></i> {{ error }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="section">
+            <div class="section-header">
+                <h2>How It <span class="text-gradient">Works</span></h2>
+                <p>Convert any PDF to immersive audio in three simple steps.</p>
+            </div>
+            <div class="grid-3">
+                <div class="step-card card-3d-hover">
+                    <div class="step-number">1</div>
+                    <i class="ph-duotone ph-upload-simple step-icon"></i>
+                    <h3>Upload PDF</h3>
+                    <p>Simply drag and drop your document. Our system securely processes files up to 50MB.</p>
+                </div>
+                <div class="step-card card-3d-hover">
+                    <div class="step-number">2</div>
+                    <i class="ph-duotone ph-sliders step-icon"></i>
+                    <h3>Select Settings</h3>
+                    <p>Choose from multiple languages and adjust the playback speed to your preference.</p>
+                </div>
+                <div class="step-card card-3d-hover">
+                    <div class="step-number">3</div>
+                    <i class="ph-duotone ph-headphones step-icon"></i>
+                    <h3>Listen & Download</h3>
+                    <p>Our neural engine synthesizes high-fidelity audio ready for instant playback or download.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="section">
+            <div class="section-header">
+                <h2>Premium <span class="text-gradient">Features</span></h2>
+                <p>Everything you need for the perfect listening experience.</p>
+            </div>
+            <div class="grid-2">
+                <div class="feature-card card-3d-hover">
+                    <div class="feature-icon"><i class="ph-duotone ph-brain"></i></div>
+                    <div class="feature-content">
+                        <h3>Neural AI Voices</h3>
+                        <p>Powered by Microsoft Neural TTS for indistinguishable human-like intonation and pacing.</p>
                     </div>
                 </div>
-
-                <button type="submit" class="btn-primary" id="submitBtn">
-                    <i class="ph-bold ph-magic-wand"></i> Synthesize Audio
-                </button>
-            </form>
-
-            <div id="loading" class="hidden">
-                <div class="ai-loader">
-                    <div class="wave"></div>
-                    <div class="wave"></div>
-                    <div class="wave"></div>
-                    <div class="wave"></div>
-                    <div class="wave"></div>
+                <div class="feature-card card-3d-hover">
+                    <div class="feature-icon"><i class="ph-duotone ph-translate"></i></div>
+                    <div class="feature-content">
+                        <h3>Multi-Language Support</h3>
+                        <p>Seamlessly convert documents in English, Spanish, French, and Hindi with native accents.</p>
+                    </div>
                 </div>
-                <p>Neural engine processing document...</p>
-                <small>Extracting text and synthesizing high-fidelity audio.</small>
+                <div class="feature-card card-3d-hover">
+                    <div class="feature-icon"><i class="ph-duotone ph-lightning"></i></div>
+                    <div class="feature-content">
+                        <h3>Lightning Fast</h3>
+                        <p>Optimized text extraction using PyMuPDF ensures your audio is ready in seconds.</p>
+                    </div>
+                </div>
+                <div class="feature-card card-3d-hover">
+                    <div class="feature-icon"><i class="ph-duotone ph-shield-check"></i></div>
+                    <div class="feature-content">
+                        <h3>Secure & Private</h3>
+                        <p>Your documents are processed securely locally and never stored longer than necessary.</p>
+                    </div>
+                </div>
             </div>
+        </section>
 
-            {% if error %}
-            <div class="alert error">
-                <i class="ph-fill ph-warning-circle"></i> {{ error }}
+        <!-- Pricing Section -->
+        <section id="pricing" class="section">
+            <div class="section-header">
+                <h2>Simple <span class="text-gradient">Pricing</span></h2>
+                <p>Start listening to your documents today with zero friction.</p>
             </div>
-            {% endif %}
-        </div>
+            <div class="pricing-card-container">
+                <div class="pricing-card glass-card card-3d-hover">
+                    <div class="pricing-header">
+                        <h3>Free Forever</h3>
+                        <div class="price"><span>$</span>0<span class="period">/month</span></div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="ph-bold ph-check text-green"></i> Unlimited conversions</li>
+                        <li><i class="ph-bold ph-check text-green"></i> All neural voices included</li>
+                        <li><i class="ph-bold ph-check text-green"></i> Up to 50MB per file</li>
+                        <li><i class="ph-bold ph-check text-green"></i> High-quality MP3 export</li>
+                        <li><i class="ph-bold ph-check text-green"></i> Community support</li>
+                    </ul>
+                    <a href="#home" class="btn-primary mt-4 text-center">Get Started Now</a>
+                </div>
+            </div>
+        </section>
+    </main>
 
-        <footer>
-            <p>Powered by Python, PyMuPDF & Microsoft Neural TTS Core</p>
-        </footer>
-    </div>
+    <footer>
+        <p>Powered by Python, PyMuPDF & Microsoft Neural TTS Core</p>
+        <p class="mt-2">&copy; 2026 AudioFlow. All rights reserved.</p>
+    </footer>
 
     <div class="developer-credit">Developed by <span>Abhranil Singha Roy</span></div>
 
@@ -144,11 +263,42 @@
         }
 
         form.addEventListener('submit', () => {
-            // Check if file is selected
             if(fileInput.files.length > 0) {
                 loading.classList.remove('hidden');
                 btn.classList.add('hidden');
             }
+        });
+
+        // 3D CSS Hover Effect for Cards
+        const cards = document.querySelectorAll('.card-3d-hover');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -10; 
+                const rotateY = ((x - centerX) / centerX) * 10;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
         });
     </script>
 </body>
